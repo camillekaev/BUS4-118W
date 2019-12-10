@@ -10,6 +10,8 @@
 /******/ 	var installedModules = {};
 /******/
 /******/ 	// The require function
+
+/******/  // CV- the webpack require attribute bundles javascript files together
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
@@ -120,7 +122,10 @@ var _ = Webflow._ = __webpack_require__(6);
 var tram = Webflow.tram = __webpack_require__(2) && $.tram;
 var domready = false;
 var destroyed = false;
+/** CV- adjusts the transparency/opacity. It's usually set to hidden
+but by setting it as false the backface visibility is able to be edited/managed through css */
 tram.config.hideBackface = false;
+/** CV- means you're inheriting transitions from existing CSS styles */
 tram.config.keepInherited = true;
 /**
  * Webflow.define - Define a named module
@@ -152,6 +157,8 @@ Webflow.require = function (name) {
 
 function bindModule(module) {
   // If running in Webflow app, subscribe to design/preview events
+  // CV- the "webflow env" code in the js file provides a global variable process;
+    // CV- "env" is an object that contains an environment variable available to the user whp is running the app
   if (Webflow.env()) {
     isFunction(module.design) && $win.on('__wf_design', module.design);
     isFunction(module.preview) && $win.on('__wf_preview', module.preview);
@@ -217,8 +224,8 @@ Webflow.push = function (ready) {
  * @param {string} mode [optional]
  * @return {boolean}
  */
-
-
+/**CV- these refer to the webflow environments that webflow users are able to edit templates or parts of CMS;
+ it also lets designers preview their website in different modes*/
 Webflow.env = function (mode) {
   var designFlag = window.__wf_design;
   var inApp = typeof designFlag !== 'undefined';
@@ -252,7 +259,7 @@ Webflow.env = function (mode) {
   }
 }; // Feature detects + browser sniffs  ಠ_ಠ
 
-
+//CV- enables the content to be used on several browsers/devices, especially interaction through touchscreens
 var userAgent = navigator.userAgent.toLowerCase();
 var touch = Webflow.env.touch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;
 var chrome = Webflow.env.chrome = /chrome/.test(userAgent) && /Google/.test(navigator.vendor) && parseInt(userAgent.match(/chrome\/(\d+)\./)[1], 10);
